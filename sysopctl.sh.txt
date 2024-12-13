@@ -1,0 +1,114 @@
+mkdir sysopctl && cd sysopctl
+
+
+touch sysopctl.sh
+chmod +x sysopctl.sh
+
+- Initialize a Git repository:
+git init
+git add sysopctl.sh
+git commit -m "Initial commit for sysopctl command"
+
+#!/bin/bash
+
+VERSION="v0.1.0"
+
+case $1 in
+    --help)
+        echo "sysopctl - A custom command for Linux system management."
+        echo "Usage:"
+        echo "  sysopctl [command] [options]"
+        echo "Commands:"
+        echo "  service list          - List running services"
+        echo "  system load           - View system load averages"
+        echo "  service start <name>  - Start a service"
+        echo "  service stop <name>   - Stop a service"
+        echo "  disk usage            - Show disk usage by partition"
+        echo "  process monitor       - Monitor system processes"
+        echo "  logs analyze          - Analyze system logs"
+        echo "  backup <path>         - Backup system files"
+        echo "Options:"
+        echo "  --help                - Show help information"
+        echo "  --version             - Show version information"
+        exit 0
+        ;;
+    --version)
+        echo "sysopctl version $VERSION"
+        exit 0
+        ;;
+    *)
+        echo "Invalid option. Use --help for usage."
+        exit 1
+        ;;
+esac
+
+
+if [ "$1" == "service" ] && [ "$2" == "list" ]; then
+    systemctl list-units --type=service --state=running
+    exit 0
+fi
+
+
+if [ "$1" == "system" ] && [ "$2" == "load" ]; then
+    uptime
+    exit 0
+fi
+
+
+if [ "$1" == "service" ]; then
+    case $2 in
+        start)
+            sudo systemctl start "$3"
+            echo "Service $3 started."
+            ;;
+        stop)
+            sudo systemctl stop "$3"
+            echo "Service $3 stopped."
+            ;;
+        *)
+            echo "Usage: sysopctl service {start|stop} <service-name>"
+            ;;
+    esac
+    exit 0
+fi
+
+
+if [ "$1" == "disk" ] && [ "$2" == "usage" ]; then
+    df -h
+    exit 0
+fi
+
+
+if [ "$1" == "process" ] && [ "$2" == "monitor" ]; then
+    top
+    exit 0
+fi
+
+
+if [ "$1" == "process" ] && [ "$2" == "monitor" ]; then
+    top
+    exit 0
+fi
+
+
+if [ "$1" == "process" ] && [ "$2" == "monitor" ]; then
+    top
+    exit 0
+fi
+
+
+if [ "$1" == "logs" ] && [ "$2" == "analyze" ]; then
+    sudo journalctl --priority=err | tail -n 10
+    exit 0
+fi
+
+
+if [ "$1" == "backup" ]; then
+    if [ -z "$2" ]; then
+        echo "Usage: sysopctl backup <path>"
+        exit 1
+    fi
+    rsync -avh --progress "$2" /backup/
+    echo "Backup of $2 completed."
+    exit 0
+fi

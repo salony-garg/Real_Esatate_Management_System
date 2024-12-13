@@ -1,0 +1,14 @@
+.TH SYSOPCTL 1 "December 2024" "v0.1.0" "Custom Linux Command"
+.SH NAME
+sysopctl \- Manage Linux system resources
+.SH SYNOPSIS
+sysopctl [command] [options]
+.SH DESCRIPTION
+sysopctl is a custom command for managing Linux system services, processes, and logs.
+.SH OPTIONS
+--help    Show help information.
+--version Show version information.
+.SH EXAMPLES
+sysopctl service list
+sysopctl service start nginx
+sysopctl system load
